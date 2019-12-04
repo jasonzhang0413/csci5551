@@ -22,7 +22,7 @@
 ## SBATCH --mail-user=myemail ### send mail to this addres (uncommnet this line in case using email)
 ##  the code will be executed in the node chosen by slurm in the interctive-cpu partition
 ## it is not necessary to ssh to any node in order to run the code in a specific node
-./quicksort_s "$@"
+./quickSort_s "$@"
 ## the script receives the matrix size from keyboard
 ## execute this script like that
 ## sbatch c_slurm.sh size  ###   size is an integer number for the matrix size

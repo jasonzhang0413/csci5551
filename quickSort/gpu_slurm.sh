@@ -18,7 +18,7 @@
 #SBATCH --gres=gpu:P100_SXM:4           ### max number of GPUs - do not change
 #SBATCH --mail-type=ALL                 ### email alert at start, end and abortion of execution
 ## SBATCH --mail-user=myemail # send mail to this address (uncomment this line if use email)
-/usr/local/cuda-8.0/bin/nvprof ./quicksort_gpu "$@"
+/usr/local/cuda-8.0/bin/nvprof ./quickSort_gpu "$@"
 ## the script receives the matrix size from keyboard
 ## execute this script like that
 ## sbatch gpu_slurm.sh size  ###   size is an integer number for the matrix size
