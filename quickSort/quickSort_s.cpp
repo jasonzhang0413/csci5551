@@ -70,25 +70,25 @@ void printArray(float arr[], int size)
 void checkResult(float array[], int size)
 {
 	float temp = 0;
-  bool checkResult = true;
-  for (int i=0; i < size; i++) {
-    if (temp > array[i]) {
-      checkResult = false;
-      break;
-    }
-    temp = array[i];
-  }
-  if (checkResult) {
-    printf( "Result sorted correct\n");
-  } else {
-    printf( "Result sorted wrong\n");
-  }
+  	bool checkResult = true;
+  	for (int i=0; i < size; i++) {
+    	if (temp > array[i]) {
+      		checkResult = false;
+      		break;
+    	}
+    	temp = array[i];
+  	}
+  	if (checkResult) {
+    	printf( "Result sorted correct\n");
+  	} else {
+    	printf( "Result sorted wrong\n");
+  	}
 }
 
 // Driver Code
 int main(int argc, char* argv[])
 {
-	unsigned int array_size, seed, i;
+  unsigned int array_size, seed, i;
   struct timeval start, end;
   double runtime;
 
@@ -103,7 +103,7 @@ int main(int argc, char* argv[])
     exit( 1 );
   }
 
-	//
+  //
   // Get the size of the array to process.
   //
   array_size = atoi( argv[1] );
@@ -113,17 +113,17 @@ int main(int argc, char* argv[])
   //
   seed = atoi( argv[2] );
 
-	//
+  //
   // Record the start time.
   //
   gettimeofday( &start, NULL );
 
-	//
+  //
   // Allocate the array to be populated.
   //
   float *array = (float *) malloc( array_size * sizeof( float ) );
 
-	//
+  //
   // Seed the random number generator and populate the array with its values.
   //
   srand( seed );
@@ -131,9 +131,9 @@ int main(int argc, char* argv[])
     array[i] = ( (float) rand() / (float) RAND_MAX ) * MAXIMUM_VALUE;
 
 
-	quickSort(array, 0, array_size - 1);
+  quickSort(array, 0, array_size - 1);
 
-	//
+  //
   // Record the end time.
   //
   gettimeofday( &end, NULL );
@@ -143,9 +143,9 @@ int main(int argc, char* argv[])
   //
   runtime = ( ( end.tv_sec  - start.tv_sec ) * 1000.0 ) + ( ( end.tv_usec - start.tv_usec ) / 1000.0 );
 
-	printf( "Statistics for array ( %d, %d ):\n", array_size, seed );
-	//printArray(array, array_size);
-	checkResult(array, array_size);
-	printf( "Processing Time: %4.4f milliseconds\n", runtime );
-	return 0;
+  printf( "Statistics for array ( %d, %d ):\n", array_size, seed );
+  //printArray(array, array_size);
+  checkResult(array, array_size);
+  printf( "Processing Time: %4.4f milliseconds\n", runtime );
+  return 0;
 }

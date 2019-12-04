@@ -90,40 +90,40 @@ __device__ void selection_sort(float *data, int size)
 __global__ void bucketSortKernel(float *inData, int size, float *outData, int bucketNumber)
 {
 	__shared__ float **localBucket;
-  __shared__ int *localBucketSize; /* Counter to track the size of each bucket */
+  	__shared__ int *localBucketSize; /* Counter to track the size of each bucket */
 	__shared__ int *localCount; /* Counter to track index of each bucket */
-  __shared__ int outIndex;
+  	__shared__ int outIndex;
 
 	int tid = threadIdx.x;
 	int offset = blockDim.x;
 	int bucket, index;
 
 	if (tid == 0) {
-    localBucket = (float **)malloc(sizeof(float) * bucketNumber);
-    localBucketSize = (int *)malloc(sizeof(float) * bucketNumber);
-    localCount = (int *)malloc(sizeof(float) * bucketNumber);
-    outIndex = 0;
-  }
+    	localBucket = (float **)malloc(sizeof(float) * bucketNumber);
+    	localBucketSize = (int *)malloc(sizeof(float) * bucketNumber);
+    	localCount = (int *)malloc(sizeof(float) * bucketNumber);
+    	outIndex = 0;
+  	}
 
-  __syncthreads();
+  	__syncthreads();
 
-  /* Traverses through the array and calculate each bucket size */
+  	/* Traverses through the array and calculate each bucket size */
 	while(tid < size) {
 		bucket = inData[tid] * bucketNumber / MAXIMUM_VALUE;
 		atomicAdd(&localBucketSize[bucket], 1);
 		tid += offset;
 	}
-  //printf( "tid %d, offset %d, localBucketSize %d\n", tid, offset, localBucketSize);
+  	//printf( "tid %d, offset %d, localBucketSize %d\n", tid, offset, localBucketSize);
 	__syncthreads();
 
-  tid = threadIdx.x;
-  for (int i=0; i < bucketNumber; i++) {
-    if (tid == i) {
-      localBucket[i] = (float *)malloc(sizeof(float) * localBucketSize[i]);
-    }
-  }
+  	tid = threadIdx.x;
+  	for (int i=0; i < bucketNumber; i++) {
+    	if (tid == i) {
+      		localBucket[i] = (float *)malloc(sizeof(float) * localBucketSize[i]);
+    	}
+  	}
 
-  __syncthreads();
+  	__syncthreads();
 
 	/* Traverses through the array and put element into buckets accordingly */
 	while(tid < size) {
@@ -135,27 +135,27 @@ __global__ void bucketSortKernel(float *inData, int size, float *outData, int bu
 
 	__syncthreads();
 
-  tid = threadIdx.x;
-  // sort each bucket
-  for (int i=0; i < bucketNumber; i++) {
-    if (tid == i) {
-      selection_sort(localBucket[i], localCount[i]);
-    }
-  }
+  	tid = threadIdx.x;
+  	// sort each bucket
+  	for (int i=0; i < bucketNumber; i++) {
+    	if (tid == i) {
+      		selection_sort(localBucket[i], localCount[i]);
+    	}
+  	}
 
-  __syncthreads();
-  // put each bucket elements into output in order
-  for (int i=0; i < bucketNumber; i++) {
-    if (i == tid) {
-      //printf( "i %d, bucket %d, tid %d, offset %d, localBucketSize %d, localCount %d\n", i, bucket, tid, offset, localBucketSize[i], localCount[i]);
-      for (int j=0; j < localCount[i]; j++) {
-        //printf( "i %d, j %d, index %d, bucket %d, tid %d, offset %d, localBucketSize %d, localCount %d\n", i, j, index, bucket, tid, offset, localBucketSize[i], localCount[i]);
-        outData[outIndex] = localBucket[i][j];
-        atomicAdd(&outIndex, 1);
-      }
-    }
-    __syncthreads();
-  }
+  	__syncthreads();
+  	// put each bucket elements into output in order
+  	for (int i=0; i < bucketNumber; i++) {
+    	if (i == tid) {
+      		//printf( "i %d, bucket %d, tid %d, offset %d, localBucketSize %d, localCount %d\n", i, bucket, tid, offset, localBucketSize[i], localCount[i]);
+      		for (int j=0; j < localCount[i]; j++) {
+        		//printf( "i %d, j %d, index %d, bucket %d, tid %d, offset %d, localBucketSize %d, localCount %d\n", i, j, index, bucket, tid, offset, localBucketSize[i], localCount[i]);
+        		outData[outIndex] = localBucket[i][j];
+        		atomicAdd(&outIndex, 1);
+      		}
+    	}
+    	__syncthreads();
+  	}
 
 }
 
@@ -174,19 +174,19 @@ void printArray(float arr[], int size)
 void checkResult(float array[], int size)
 {
 	float temp = 0;
-  bool checkResult = true;
-  for (int i=0; i < size; i++) {
-    if (temp > array[i]) {
-      checkResult = false;
-      break;
-    }
-    temp = array[i];
-  }
-  if (checkResult) {
-    printf( "Result sorted correct\n");
-  } else {
-    printf( "Result sorted wrong\n");
-  }
+	bool checkResult = true;
+  	for (int i=0; i < size; i++) {
+    	if (temp > array[i]) {
+      		checkResult = false;
+      		break;
+    	}
+    	temp = array[i];
+  	}
+  	if (checkResult) {
+    	printf( "Result sorted correct\n");
+  	} else {
+    	printf( "Result sorted wrong\n");
+  	}
 }
 
 int main( int argc, char* argv[] ) {
@@ -194,7 +194,7 @@ int main( int argc, char* argv[] ) {
   // Determine min, max, mean, mode and standard deviation of array
   //
   float *array, *results;
-	float *d_input, *d_output;
+  float *d_input, *d_output;
 
   unsigned int array_size, seed, i, bucketNumber;
   struct timeval start, end;
@@ -245,21 +245,21 @@ int main( int argc, char* argv[] ) {
 
 
   /* Number of bucket needed */
-	bucketNumber = array_size / TARGET_BUCKET_SIZE;
+  bucketNumber = array_size / TARGET_BUCKET_SIZE;
 
-	results = (float *)malloc(sizeof(float) * array_size);
+  results = (float *)malloc(sizeof(float) * array_size);
 
   // Allocate GPU memory.
   cudaMalloc((void**)&d_input, sizeof(float) * array_size);
-	cudaMalloc((void **)&d_output, sizeof(float) * array_size);
-	cudaMemset(d_output, 0, sizeof(float) * array_size);
+  cudaMalloc((void **)&d_output, sizeof(float) * array_size);
+  cudaMemset(d_output, 0, sizeof(float) * array_size);
 
   cudaMemcpy(d_input, array, sizeof(float) * array_size, cudaMemcpyHostToDevice);
 
   // Execute
-	//bucketSortKernel<<<bucketNumber, 1>>>(d_input, array_size, d_output, bucketLength, bucketNumber);
+  //bucketSortKernel<<<bucketNumber, 1>>>(d_input, array_size, d_output, bucketLength, bucketNumber);
   bucketSortKernel<<<1, bucketNumber>>>(d_input, array_size, d_output, bucketNumber);
-	cudaMemcpy(results, d_output, sizeof(float) * array_size, cudaMemcpyDeviceToHost);
+  cudaMemcpy(results, d_output, sizeof(float) * array_size, cudaMemcpyDeviceToHost);
   //checkCudaErrors(cudaMemcpy(results, dev_array, array_size*sizeof(float), cudaMemcpyDeviceToHost));
 
   //
@@ -287,9 +287,9 @@ int main( int argc, char* argv[] ) {
   // Free the allocated array.
   //
   cudaFree(d_input);
-	cudaFree(d_output);
-	free(array);
-	free(results);
+  cudaFree(d_output);
+  free(array);
+  free(results);
 
   // cudaDeviceReset causes the driver to clean up all state. While
   // not mandatory in normal operation, it is good practice.  It is also

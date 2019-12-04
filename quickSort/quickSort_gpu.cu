@@ -111,7 +111,6 @@ __global__ void cdp_simple_quicksort(float *data, int left, int right, int depth
 
     float *lptr = data+left;
     float *rptr = data+right;
-    //float  pivot = data[(left+right)/2];
     float  pivot = data[right];
 
     // Do the partitioning.
@@ -197,19 +196,19 @@ void printArray(float arr[], int size)
 void checkResult(float array[], int size)
 {
 	float temp = 0;
-  bool checkResult = true;
-  for (int i=0; i < size; i++) {
-    if (temp > array[i]) {
-      checkResult = false;
-      break;
-    }
-    temp = array[i];
-  }
-  if (checkResult) {
-    printf( "Result sorted correct\n");
-  } else {
-    printf( "Result sorted wrong\n");
-  }
+  	bool checkResult = true;
+  	for (int i=0; i < size; i++) {
+    	if (temp > array[i]) {
+      		checkResult = false;
+      		break;
+    	}
+    	temp = array[i];
+  	}
+  	if (checkResult) {
+    	printf( "Result sorted correct\n");
+  	} else {
+    	printf( "Result sorted wrong\n");
+  	}
 }
 
 int main( int argc, char* argv[] ) {

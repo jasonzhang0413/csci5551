@@ -46,64 +46,64 @@ void printArray(float arr[], int size)
 void checkResult(float array[], int size)
 {
 	float temp = 0;
-  bool checkResult = true;
-  for (int i=0; i < size; i++) {
-    if (temp > array[i]) {
-      checkResult = false;
-      break;
-    }
-    temp = array[i];
-  }
-  if (checkResult) {
-    printf( "Result sorted correct\n");
-  } else {
-    printf( "Result sorted wrong\n");
-  }
+  	bool checkResult = true;
+  	for (int i=0; i < size; i++) {
+    	if (temp > array[i]) {
+      		checkResult = false;
+      		break;
+    	}
+    	temp = array[i];
+  	}
+  	if (checkResult) {
+    	printf( "Result sorted correct\n");
+  	} else {
+    	printf( "Result sorted wrong\n");
+  	}
 }
 
 int main(int argc, char* argv[])
 {
 	unsigned int array_size, seed, i, bucketNumber;
-  struct timeval start, end;
-  double runtime;
+  	struct timeval start, end;
+  	double runtime;
 
 	if( argc < 3 ) {
-    printf( "Format: stats_gpu <size of array> <random seed>\n" );
-    printf( "Arguments:\n" );
-    printf( "  size of array - This is the size of the array to be generated and processed\n" );
-    printf( "  random seed   - This integer will be used to seed the random number\n" );
-    printf( "                  generator that will generate the contents of the array\n" );
-    printf( "                  to be processed\n" );
+    	printf( "Format: stats_gpu <size of array> <random seed>\n" );
+    	printf( "Arguments:\n" );
+    	printf( "  size of array - This is the size of the array to be generated and processed\n" );
+    	printf( "  random seed   - This integer will be used to seed the random number\n" );
+    	printf( "                  generator that will generate the contents of the array\n" );
+    	printf( "                  to be processed\n" );
 
-    exit( 1 );
-  }
-
-	//
-  // Get the size of the array to process.
-  //
-  array_size = atoi( argv[1] );
-
-  //
-  // Get the seed to be used
-  //
-  seed = atoi( argv[2] );
+    	exit( 1 );
+  	}
 
 	//
-  // Record the start time.
-  //
-  gettimeofday( &start, NULL );
+  	// Get the size of the array to process.
+  	//
+  	array_size = atoi( argv[1] );
+
+  	//
+  	// Get the seed to be used
+  	//
+  	seed = atoi( argv[2] );
 
 	//
-  // Allocate the array to be populated.
-  //
-  float *array = (float *) malloc( array_size * sizeof( float ) );
+  	// Record the start time.
+  	//
+  	gettimeofday( &start, NULL );
 
 	//
-  // Seed the random number generator and populate the array with its values.
-  //
-  srand( seed );
-  for( i = 0; i < array_size; i++ )
-    array[i] = ( (float) rand() / (float) RAND_MAX ) * MAXIMUM_VALUE;
+  	// Allocate the array to be populated.
+  	//
+  	float *array = (float *) malloc( array_size * sizeof( float ) );
+
+	//
+  	// Seed the random number generator and populate the array with its values.
+  	//
+  	srand( seed );
+  	for( i = 0; i < array_size; i++ )
+    	array[i] = ( (float) rand() / (float) RAND_MAX ) * MAXIMUM_VALUE;
 
 
 	//printArray(array, array_size);
@@ -112,19 +112,17 @@ int main(int argc, char* argv[])
 
 	printf( "bucketNumber for array is ( %d ):\n", bucketNumber );
 
-
-
 	bucketSort(array, array_size, bucketNumber);
 
 	//
-  // Record the end time.
-  //
-  gettimeofday( &end, NULL );
+  	// Record the end time.
+  	//
+  	gettimeofday( &end, NULL );
 
-  //
-  // Calculate the runtime.
-  //
-  runtime = ( ( end.tv_sec  - start.tv_sec ) * 1000.0 ) + ( ( end.tv_usec - start.tv_usec ) / 1000.0 );
+  	//
+  	// Calculate the runtime.
+  	//
+  	runtime = ( ( end.tv_sec  - start.tv_sec ) * 1000.0 ) + ( ( end.tv_usec - start.tv_usec ) / 1000.0 );
 
 	printf( "Statistics for array ( %d, %d ):\n", array_size, seed );
 	//printArray(array, array_size);
