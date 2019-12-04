@@ -32,7 +32,7 @@ void bucketSort(float arr[], int n, int bucketNumber)
 	int index = 0;
 	for (int i = 0; i < bucketNumber; i++)
 		for (int j = 0; j < b[i].size(); j++)
-		arr[index++] = b[i][j];
+			arr[index++] = b[i][j];
 }
 
 void printArray(float arr[], int size)
@@ -48,16 +48,16 @@ void checkResult(float array[], int size)
 	float temp = 0;
   	bool checkResult = true;
   	for (int i=0; i < size; i++) {
-    	if (temp > array[i]) {
-      		checkResult = false;
-      		break;
-    	}
-    	temp = array[i];
+    		if (temp > array[i]) {
+      			checkResult = false;
+      			break;
+    		}
+    		temp = array[i];
   	}
   	if (checkResult) {
-    	printf( "Result sorted correct\n");
+    		printf( "Result sorted correct\n");
   	} else {
-    	printf( "Result sorted wrong\n");
+    		printf( "Result sorted wrong\n");
   	}
 }
 
@@ -68,14 +68,14 @@ int main(int argc, char* argv[])
   	double runtime;
 
 	if( argc < 3 ) {
-    	printf( "Format: stats_gpu <size of array> <random seed>\n" );
-    	printf( "Arguments:\n" );
-    	printf( "  size of array - This is the size of the array to be generated and processed\n" );
-    	printf( "  random seed   - This integer will be used to seed the random number\n" );
-    	printf( "                  generator that will generate the contents of the array\n" );
-    	printf( "                  to be processed\n" );
+    		printf( "Format: stats_gpu <size of array> <random seed>\n" );
+    		printf( "Arguments:\n" );
+    		printf( "  size of array - This is the size of the array to be generated and processed\n" );
+    		printf( "  random seed   - This integer will be used to seed the random number\n" );
+    		printf( "                  generator that will generate the contents of the array\n" );
+    		printf( "                  to be processed\n" );
 
-    	exit( 1 );
+    		exit( 1 );
   	}
 
 	//
@@ -103,7 +103,7 @@ int main(int argc, char* argv[])
   	//
   	srand( seed );
   	for( i = 0; i < array_size; i++ )
-    	array[i] = ( (float) rand() / (float) RAND_MAX ) * MAXIMUM_VALUE;
+    		array[i] = ( (float) rand() / (float) RAND_MAX ) * MAXIMUM_VALUE;
 
 
 	//printArray(array, array_size);

@@ -72,16 +72,16 @@ void checkResult(float array[], int size)
 	float temp = 0;
   	bool checkResult = true;
   	for (int i=0; i < size; i++) {
-    	if (temp > array[i]) {
-      		checkResult = false;
-      		break;
-    	}
-    	temp = array[i];
+    		if (temp > array[i]) {
+      			checkResult = false;
+      			break;
+    		}
+    		temp = array[i];
   	}
   	if (checkResult) {
-    	printf( "Result sorted correct\n");
+    		printf( "Result sorted correct\n");
   	} else {
-    	printf( "Result sorted wrong\n");
+    		printf( "Result sorted wrong\n");
   	}
 }
 
@@ -92,7 +92,7 @@ int main(int argc, char* argv[])
   struct timeval start, end;
   double runtime;
 
-	if( argc < 3 ) {
+  if( argc < 3 ) {
     printf( "Format: stats_gpu <size of array> <random seed>\n" );
     printf( "Arguments:\n" );
     printf( "  size of array - This is the size of the array to be generated and processed\n" );

@@ -198,16 +198,16 @@ void checkResult(float array[], int size)
 	float temp = 0;
   	bool checkResult = true;
   	for (int i=0; i < size; i++) {
-    	if (temp > array[i]) {
-      		checkResult = false;
-      		break;
-    	}
-    	temp = array[i];
+    		if (temp > array[i]) {
+      			checkResult = false;
+      			break;
+    		}
+    		temp = array[i];
   	}
   	if (checkResult) {
-    	printf( "Result sorted correct\n");
+    		printf( "Result sorted correct\n");
   	} else {
-    	printf( "Result sorted wrong\n");
+    		printf( "Result sorted wrong\n");
   	}
 }
 

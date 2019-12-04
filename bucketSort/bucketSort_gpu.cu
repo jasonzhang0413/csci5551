@@ -118,9 +118,9 @@ __global__ void bucketSortKernel(float *inData, int size, float *outData, int bu
 
   	tid = threadIdx.x;
   	for (int i=0; i < bucketNumber; i++) {
-    	if (tid == i) {
-      		localBucket[i] = (float *)malloc(sizeof(float) * localBucketSize[i]);
-    	}
+    		if (tid == i) {
+      			localBucket[i] = (float *)malloc(sizeof(float) * localBucketSize[i]);
+    		}
   	}
 
   	__syncthreads();
@@ -138,23 +138,23 @@ __global__ void bucketSortKernel(float *inData, int size, float *outData, int bu
   	tid = threadIdx.x;
   	// sort each bucket
   	for (int i=0; i < bucketNumber; i++) {
-    	if (tid == i) {
-      		selection_sort(localBucket[i], localCount[i]);
-    	}
+    		if (tid == i) {
+      			selection_sort(localBucket[i], localCount[i]);
+    		}
   	}
 
   	__syncthreads();
   	// put each bucket elements into output in order
   	for (int i=0; i < bucketNumber; i++) {
-    	if (i == tid) {
-      		//printf( "i %d, bucket %d, tid %d, offset %d, localBucketSize %d, localCount %d\n", i, bucket, tid, offset, localBucketSize[i], localCount[i]);
-      		for (int j=0; j < localCount[i]; j++) {
-        		//printf( "i %d, j %d, index %d, bucket %d, tid %d, offset %d, localBucketSize %d, localCount %d\n", i, j, index, bucket, tid, offset, localBucketSize[i], localCount[i]);
-        		outData[outIndex] = localBucket[i][j];
-        		atomicAdd(&outIndex, 1);
-      		}
-    	}
-    	__syncthreads();
+    		if (i == tid) {
+      			//printf( "i %d, bucket %d, tid %d, offset %d, localBucketSize %d, localCount %d\n", i, bucket, tid, offset, localBucketSize[i], localCount[i]);
+      			for (int j=0; j < localCount[i]; j++) {
+        			//printf( "i %d, j %d, index %d, bucket %d, tid %d, offset %d, localBucketSize %d, localCount %d\n", i, j, index, bucket, tid, offset, localBucketSize[i], localCount[i]);
+        			outData[outIndex] = localBucket[i][j];
+        			atomicAdd(&outIndex, 1);
+      			}
+    		}
+    		__syncthreads();
   	}
 
 }
@@ -176,16 +176,16 @@ void checkResult(float array[], int size)
 	float temp = 0;
 	bool checkResult = true;
   	for (int i=0; i < size; i++) {
-    	if (temp > array[i]) {
-      		checkResult = false;
-      		break;
-    	}
-    	temp = array[i];
+    		if (temp > array[i]) {
+      			checkResult = false;
+      			break;
+    		}
+    		temp = array[i];
   	}
   	if (checkResult) {
-    	printf( "Result sorted correct\n");
+    		printf( "Result sorted correct\n");
   	} else {
-    	printf( "Result sorted wrong\n");
+    		printf( "Result sorted wrong\n");
   	}
 }
 
@@ -260,7 +260,6 @@ int main( int argc, char* argv[] ) {
   //bucketSortKernel<<<bucketNumber, 1>>>(d_input, array_size, d_output, bucketLength, bucketNumber);
   bucketSortKernel<<<1, bucketNumber>>>(d_input, array_size, d_output, bucketNumber);
   cudaMemcpy(results, d_output, sizeof(float) * array_size, cudaMemcpyDeviceToHost);
-  //checkCudaErrors(cudaMemcpy(results, dev_array, array_size*sizeof(float), cudaMemcpyDeviceToHost));
 
   //
   // Record the end time.
